@@ -47,13 +47,6 @@ def generate_cases(n_turbines=3,
     fst_vt["TurbSim"] = {}
     fst_vt["FASTFarm"] = {}
 
-    # Set the parameters for the low resolution TurbSim grid
-    NumGrid_Z_LR, NumGrid_Y_LR, GridHeight_LR, GridWidth_LR, AnalysisTime_LR, \
-    TimeStep_LR, HubHt_for_TS_LR = set_turbsim(
-        n_turbines, rotor_diameter, hub_height, ws, spacing, wind_direction, 
-        domain_edge=domain_edge_LR, dy=10., dz=10., res='low', TimeStep_HR=desired_OF_timestep, mod_wake = Mod_Wake,
-    )
-
     turbsim_lr = []
     turbsim_hr = []
 
@@ -61,6 +54,14 @@ def generate_cases(n_turbines=3,
         for seed in range(n_seeds):
             for TI_i in TI:
                 for shear_i in shear:
+
+                    # Set the parameters for the low resolution TurbSim grid
+                    NumGrid_Z_LR, NumGrid_Y_LR, GridHeight_LR, GridWidth_LR, AnalysisTime_LR, \
+                    TimeStep_LR, HubHt_for_TS_LR = set_turbsim(
+                        n_turbines, rotor_diameter, hub_height, ws_i, spacing, wind_direction, 
+                        domain_edge=domain_edge_LR, dy=10., dz=10., res='low', TimeStep_HR=desired_OF_timestep, mod_wake = Mod_Wake,
+                    )
+
                     # Create an inflow directory for each inflow case
                     # Start with low resolution
                     ts_lr_filename = os.path.join(inflow_dir, "ws%.2f_s%u_TI%.2f_shear%.2f.in" % (ws_i, seed, TI_i, shear_i))

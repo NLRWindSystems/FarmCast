@@ -13,8 +13,8 @@ def set_turbsim(n_turbines, rotor_diameter, hub_height, ws, spacing, wind_direct
         The diameter of the wind turbine rotor (in meters).
     hub_height : float
         The hub height of the wind turbine (in meters).
-    ws : array-like
-        A list or array of wind speeds (in m/s).
+    ws : float
+        Wind speed (in m/s).
     spacing : array-like
         A list or array of spacing factors (dimensionless) between turbines.
     wind_direction : array-like
@@ -62,20 +62,20 @@ def set_turbsim(n_turbines, rotor_diameter, hub_height, ws, spacing, wind_direct
         )
         Height = hub_height  + 2 * rotor_diameter
         if mod_wake == 1:
-            TimeStep_Desired = Cmeander*rotor_diameter/(10*np.max(ws))
+            TimeStep_Desired = Cmeander*rotor_diameter/(10*ws)
         elif mod_wake == 2:
-            TimeStep_Desired = (rotor_diameter/15)/(2*np.max(ws))
+            TimeStep_Desired = (rotor_diameter/15)/(2*ws)
         TimeStep = getMultipleOf(TimeStep_Desired, multipleof=TimeStep_HR)
     else:
         Width = rotor_diameter * (1. + domain_edge[1])
         Height = hub_height  + 0.5 * rotor_diameter * (1. + domain_edge[1])
-        TimeStep = None #np.round(np.min([1., Cmeander * rotor_diameter / (np.min(ws) * 10.0)]), 1)
+        TimeStep = None #np.round(np.min([1., Cmeander * rotor_diameter / (ws * 10.0)]), 1)
     # Set the analysis time based on the lowest wind speed and highest spacing, plus transient
     AnalysisTime = np.ceil(
         (
             (n_turbines - 1) * np.max(spacing) * rotor_diameter 
             + 2 * domain_edge[0] * rotor_diameter
-        ) / np.min(ws) 
+        ) / ws
         + transient 
         + analysis_time
     )
