@@ -46,21 +46,18 @@ folders = [f for f in os.listdir(directory) if os.path.isdir(os.path.join(direct
 folders.sort(key=lambda x: int(x.split('_')[-1]))
 
 cases_run = 0
-cases_run_msg = False
+last_case_run = 0
 ok_cases = 0
 failed_cases = 0
 
 for i in range(len(folders)):
     folder_path = os.path.join(directory, folders[i])
     outb = os.path.join(folder_path, "fastfarm", filename + ".T1.outb")
-    if not os.path.exists(outb):
-        # print(f"{folders[i]} not run or output file missing")
-        if cases_run_msg == False:
-            cases_run += 1
-            cases_run_msg = True
-    else:
+    if os.path.exists(outb):
+        cases_run += 1
         data = read(outb)
         if data["Time"][-1] > Tmax:
+            last_case_run = i
             ok_cases += 1
         else:
             failed_cases += 1
@@ -69,3 +66,4 @@ print(f"Total number of cases: {len(folders)}")
 print(f"Cases run so far: {cases_run}")
 print(f"Successful cases: {ok_cases}")
 print(f"Not successful cases: {failed_cases}")
+print(f"Last successful case: {last_case_run}")
