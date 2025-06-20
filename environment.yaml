@@ -6,6 +6,7 @@ dependencies:
   - jsonschema
   - matplotlib
   - numpy
+  - pcrunch
   - pip
   - python
   - pytest
