@@ -1,4 +1,5 @@
 from pCrunch import read
+
 """
 This script checks the output files of simulation runs in a specified directory and determines whether 
 each simulation completed successfully or failed prematurely.
@@ -18,14 +19,15 @@ Workflow:
     2. Sort the subdirectories numerically based on the suffix of their names (assumes folder names end 
        with an underscore followed by a number).
     3. For each folder:
-        - Construct the path to the expected output file.
-        - Check if the output file exists:
-            - If not, print a message indicating the folder was not run or the output file is missing.
-            - If it exists, read the output file and check the last time step:
-                - If the last time step is greater than `Tmax`, print a message indicating the simulation 
-                  completed successfully.
-                - Otherwise, print a message indicating the simulation failed prematurely and display the 
-                  last time step.
+        - If not run, increment the count of cases that have been run but are missing output files.
+            - If the last time step is greater than `Tmax`, increment the count of successful cases.
+            - Otherwise, increment the count of failed cases.
+
+    Outputs:
+        - Prints the total number of cases.
+        - Prints the number of cases that have been run but are missing output files.
+        - Prints the number of successful cases.
+        - Prints the number of failed cases.
 
 Usage:
     - Update the `directory` variable to point to the directory containing your simulation case folders.
@@ -43,16 +45,27 @@ Tmax = 900
 folders = [f for f in os.listdir(directory) if os.path.isdir(os.path.join(directory, f))]
 folders.sort(key=lambda x: int(x.split('_')[-1]))
 
-for folder in folders:
-    folder_path = os.path.join(directory, folder)
+cases_run = 0
+cases_run_msg = False
+ok_cases = 0
+failed_cases = 0
+
+for i in range(len(folders)):
+    folder_path = os.path.join(directory, folders[i])
     outb = os.path.join(folder_path, "fastfarm", filename + ".T1.outb")
     if not os.path.exists(outb):
-        print(f"{folder} not run or output file missing")
+        # print(f"{folders[i]} not run or output file missing")
+        if cases_run_msg == False:
+            cases_run += 1
+            cases_run_msg = True
     else:
         data = read(outb)
         if data["Time"][-1] > Tmax:
-            print(f"{folder} completed successfully")
+            ok_cases += 1
         else:
-            print(f"{folder} failed prematurely, last time step: {data['Time'][-1]}")
+            failed_cases += 1
 
-
+print(f"Total number of cases: {len(folders)}")
+print(f"Cases run so far: {cases_run}")
+print(f"Successful cases: {ok_cases}")
+print(f"Not successful cases: {failed_cases}")
