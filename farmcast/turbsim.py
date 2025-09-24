@@ -64,7 +64,7 @@ def set_turbsim(n_turbines, rotor_diameter, hub_height, ws, spacing, wind_direct
         if mod_wake == 1:
             TimeStep_Desired = Cmeander*rotor_diameter/(10*ws)
         elif mod_wake == 2:
-            TimeStep_Desired = (rotor_diameter/15)/(2*ws)
+            TimeStep_Desired = np.max([2., (rotor_diameter/15)/(2*ws)])
         TimeStep = getMultipleOf(TimeStep_Desired, multipleof=TimeStep_HR)
     else:
         Width = rotor_diameter * (1. + domain_edge[1])
