@@ -350,8 +350,10 @@ properties:
                 default: 0
                 description: Number of XY planes for output of disturbed wind data across the low-resolution domain to <RootName>.Low.DisXY<n_out>.t<n>.vtk (-) [0 to 999]
             OutDisWindZ:
-                type: number
-                default: 110.0
+                type: array
+                items:
+                    type: number
+                default: [0.]
                 description: Z coordinates of XY planes for output of disturbed wind data across the low-resolution domain (m) [1 to NOutDisWindXY] [unused for NOutDisWindXY=0]
             NOutDisWindYZ:
                 type: integer
@@ -361,15 +363,17 @@ properties:
                 type: array
                 items:
                     type: number
-                default: [-780, 0, 780]
+                default: [0.]
                 description: X coordinates of YZ planes for output of disturbed wind data across the low-resolution domain (m) [1 to NOutDisWindYZ] [unused for NOutDisWindYZ=0]
             NOutDisWindXZ:
                 type: integer
                 default: 0
                 description: Number of XZ planes for output of disturbed wind data across the low-resolution domain to <RootName>/Low.DisXZ<n_out>.t<n>.vtk (-) [0 to 999]
             OutDisWindY:
-                type: number
-                default: 0.0
+                type: array
+                items:
+                    type: number
+                default: [0.]
                 description: Y coordinates of XZ planes for output of disturbed wind data across the low-resolution domain (m) [1 to NOutDisWindXZ] [unused for NOutDisWindXZ=0]
             WrDisDT:
                 type: number
