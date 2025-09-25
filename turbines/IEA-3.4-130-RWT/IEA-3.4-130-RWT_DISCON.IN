@@ -19,6 +19,7 @@
 2                   ! PRC_Mode        - Power reference tracking mode{0: use standard rotor speed set points, 1: use PRC rotor speed setpoints}
 2                   ! WE_Mode         - Wind speed estimator mode {0: One-second low pass filtered hub height wind speed, 1: Immersion and Invariance Estimator, 2: Extended Kalman Filter}
 1                   ! PS_Mode         - Pitch saturation mode {0: no pitch saturation, 1: implement pitch saturation}
+0                   ! SU_Mode         - Startup mode (0: no startup procedure, 1: startup enabled)
 0                   ! SD_Mode         - Shutdown mode {0: no shutdown procedure, 1: pitch to max pitch at shutdown}
 0                   ! Fl_Mode         - Floating specific feedback mode {0: no nacelle velocity feedback, 1: feed back translational velocity, 2: feed back rotational veloicty}
 0                   ! TD_Mode         - Tower damper mode (0- no tower damper, 1- feed back translational nacelle accelleration to pitch angle
@@ -151,6 +152,16 @@
 3.000 3.241 3.482 3.723 3.964 4.205 4.447 4.688 4.929 5.170 5.411 5.652 5.893 6.134 6.375 6.616 6.858 7.099 7.340 7.581 7.822 8.063 8.304 8.545 8.786 9.027 9.269 9.510 9.751 9.992 10.492 10.992 11.493 11.993 12.493 12.993 13.494 13.994 14.494 14.995 15.495 15.995 16.495 16.996 17.496 17.996 18.496 18.997 19.497 19.997 20.498 20.998 21.498 21.998 22.499 22.999 23.499 23.999 24.500 25.000               ! PS_WindSpeeds     - Wind speeds corresponding to minimum blade pitch angles [m/s]
 0.000      0.000      0.000      0.000      0.000      0.000      0.000      0.000      0.000      0.000      0.000      0.000      0.000      0.000      0.000      0.000      0.000      0.000      0.000      0.000      0.000      0.000      0.000      0.000      0.000      0.007      0.023      0.038      0.050      0.061      0.075      0.088      0.100      0.113      0.124      0.136      0.147      0.157      0.168      0.179      0.190      0.200      0.210      0.219      0.230      0.239      0.249      0.258      0.268      0.278      0.287      0.297      0.306      0.315      0.324      0.333      0.343      0.352      0.361      0.370                    ! PS_BldPitchMin    - Minimum blade pitch angles [rad]
 
+!------- STARTUP -----------------------------------------------------------
+120.0000000000        ! SU_StartTime            - Time to start startup routine [s]
+200.0000000000        ! SU_FW_MinDuration       - Free-wheel minimum duration [s]
+0.520000000000        ! SU_RotorSpeedThresh     - Rotor speed threshhold to switch from freewheel to loads [rad/s]
+0.418880000000        ! SU_RotorSpeedCornerFreq - Cutoff Frequency for first order low-pass filter for rotor speed for startup [rad/s]
+2                     ! SU_LoadStages_N           - Number of load staged for startup (should equal number of values in SU_LoadStages, SU_LoadRampDuration and SU_LoadHoldDuration)
+0.2000 1.0000         ! SU_LoadStages        - Array containing loads as a fraction of full generator torque during startup
+100.0000 100.0000         ! SU_LoadRampDuration  - Array containing ramp duration to reach the corresponding partial loads during startup [s]
+200.0000 100.0000         ! SU_LoadHoldDuration  - Array containing duration to hold the partial loads during startup [s]
+
 !------- SHUTDOWN -----------------------------------------------------------
 0                   ! SD_TimeActivate        - Time to acitvate shutdown modes, [s]
 0                   ! SD_EnablePitch         - Shutdown when collective blade pitch exceeds a threshold, [-]
@@ -165,8 +176,11 @@
 0.418880000000      ! SD_GenSpdCornerFreq    - Cutoff Frequency for first order low-pass filter for generator speed for shutdown, [rad/s] 
 9999.000000000      ! SD_Time                - Shutdown time, [s]
 1                   ! SD_Method              - Shutdown method {1: Reduce generator torque and increase blade pitch}, [-]
-22000.00000000      ! SD_MaxTorqueRate       - Maximum torque rate for shutdown, [Nm/s]
-0.174500000000      ! SD_MaxPitchRate        - Maximum pitch rate used for shutdown, [rad/s]
+1                   ! SD_Stage_N             - Number of shutdown stages (should equal number of values in SD_MaxPitchRate and SD_MaxTorqueRate) [-]
+1000.0000           ! SD_StageTime           - Array containing the time to spend in each shutdown stage [s]
+1.5708              ! SD_StagePitch          - Array with pitch angles to reach in each shutdown stage [rad]. If the pitch < SD_StagePitch[i], the SD_Stage = i.  If pitch > SD_StagePitch[SD_Stage_N], the maximum rates are used.
+3100.0000           ! SD_MaxTorqueRate       - Maximum torque rate for shutdown [Nm/s]
+0.2500              ! SD_MaxPitchRate        - Maximum pitch rate used for shutdown [rad/s]
 
 !------- Floating -----------------------------------------------------------
 1                   ! Fl_n              - Number of Fl_Kp gains in gain scheduling, optional with default of 1
@@ -201,6 +215,7 @@
 
 !------- Pitch Actuator Faults -----------------------------------------------------
 0.00000000 0.00000000 0.00000000                 ! PF_Offsets     - Constant blade pitch offsets for blades 1-3 [rad]
+9999.0000  9999.0000  9999.0000                  ! PF_TimeStuck     - Time pitch actuator becomes stuck at last value for each blade (array with length of 3), only used if PF_Mode = 2
 
 !------- Active Wake Control -----------------------------------------------------
 1                   ! AWC_NumModes       - Number of user-defined AWC forcing modes 
@@ -209,6 +224,8 @@
 0.0500              ! AWC_freq           - Frequency(s) of forcing mode(s) [Hz]
 1.0000              ! AWC_amp            - Pitch amplitude(s) of individual forcing mode(s) [deg]
 0.0000              ! AWC_clockangle     - Initial angle(s) of forcing mode(s) [deg]
+0.000000000000      ! AWC_phaseoffset 	 - Azimuth offset in the Coleman transformation [deg]
+0.0000 0.0000       ! AWC_CntrGains           - KP and KI/KR gain of the active wake controller [-]
 
 !------- External Controller Interface -----------------------------------------------------
 "unused"            ! DLL_FileName        - Name/location of the dynamic library in the Bladed-DLL format

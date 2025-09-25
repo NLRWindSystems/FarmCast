@@ -10,7 +10,7 @@ base_dir = os.path.dirname(run_dir)
 hpc_email = 'pbortolo@nrel.gov'
 path2turbsim = '/projects/windse/cbay/solvers/turbsim'
 path2fastfarm = '/projects/windse/cbay/solvers/FAST.Farm'
-path2controller = '/home/pbortolo/ROSCO/ROSCO_v2p9p7d/rosco/controller/build/libdiscon.so'
+path2controller = '/home/pbortolo/ROSCO/ROSCO_v2p10p1/rosco/controller/build/libdiscon.so'
 
 # Set the output directory for the generated files
 # output_dir = os.path.join(os.path.dirname(base_dir), "FarmCast_runs")
