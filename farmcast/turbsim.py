@@ -68,7 +68,7 @@ def set_turbsim(n_turbines, rotor_diameter, hub_height, ws, spacing, wind_direct
         TimeStep = getMultipleOf(TimeStep_Desired, multipleof=TimeStep_HR)
     else:
         Width = rotor_diameter * (1. + domain_edge[1])
-        Height = hub_height  + 0.5 * rotor_diameter * (1. + domain_edge[1])
+        Height = hub_height  + 0.5 * rotor_diameter * (1. + domain_edge[1]) -1.
         TimeStep = None #np.round(np.min([1., Cmeander * rotor_diameter / (ws * 10.0)]), 1)
     # Set the analysis time based on the lowest wind speed and highest spacing, plus transient
     AnalysisTime = np.ceil(

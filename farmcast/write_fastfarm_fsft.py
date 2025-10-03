@@ -52,8 +52,7 @@ def generate_fsft(fst_vt, output_path):
                 
                 # Add section headers based on specific keys
                 if key == "Mod_SharedMooring":
-                    fsft_file.write("--- SUPER CONTROLLER --- [used only for UseSC=True]\n")
-                elif key == "SC_FileName":
+                    # fsft_file.write("--- SUPER CONTROLLER --- [used only for UseSC=True]\n")
                     fsft_file.write("--- SHARED MOORING SYSTEM --- [used only for Mod_SharedMoor>0]\n")
                 elif key == "WrMooringVis":
                     fsft_file.write("--- AMBIENT WIND: PRECURSOR IN VTK FORMAT --- [used only for Mod_AmbWind=1]\n")

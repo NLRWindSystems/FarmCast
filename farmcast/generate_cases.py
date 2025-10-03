@@ -28,8 +28,8 @@ def generate_cases(n_turbines=3,
                    T1_yaw_misalignment=np.arange(-30., 30., 10.),
                    T2_yaw_misalignment=np.arange(-20., 20., 10.),
                    curtailment_T1T2=np.arange(20., 100., 5.),
-                   domain_edge_LR = [1., 1.],
-                   domain_edge_HR = [0.3, 0.3], # extra spacing along x (left and right) and y (top and bottom ) in D
+                   domain_edge_LR = [3., 3.],
+                   domain_edge_HR = [0.4, 0.4], # extra spacing along x (left and right) and y (top and bottom ) in D
                    cmax = 5.,
                    Mod_Wake = 2,  # 1: Polar, 2: Curled, 3: Cartesian
                    desired_OF_timestep=0.25,
@@ -153,8 +153,7 @@ def generate_cases(n_turbines=3,
                             # Set ambient wind parameters
                             # Low res first
                             dT_High = TimeStep_HR
-                            dt_low_desired = 1.
-                            dT_Low = getMultipleOf(dt_low_desired, multipleof=dT_High)
+                            dT_Low = TimeStep_LR
 
 
                             bts_high = ts_hr_filename[:-3] + ".bts"
@@ -266,12 +265,19 @@ def generate_cases(n_turbines=3,
                                         if fst_vt["FASTFarm"]["Mod_Wake"] == 1: # Polar model
                                             dr = 5.
                                         else: # Curled; Cartesian
-                                            dr = round(rotor_diameter/15)
+                                            dr = round(rotor_diameter/10)
                                         fst_vt["FASTFarm"]['dr'] = dr
                                         fst_vt["FASTFarm"]['NumRadii']  = int(np.ceil(3*rotor_diameter/(2*dr) + 1))
                                         fst_vt["FASTFarm"]['NumPlanes'] = int(np.ceil(20*rotor_diameter/(TimeStep_LR*ws_i*(1-1/6))))
                                         fst_vt["FASTFarm"]['f_c'] = 1.28*ws_i/rotor_diameter
                                         fst_vt["FASTFarm"]['Mod_Projection'] = 2
+                                        fst_vt["FASTFarm"]["NOutDisWindXY"] = 1
+                                        fst_vt["FASTFarm"]["OutDisWindZ"] = [110.0]
+                                        fst_vt["FASTFarm"]["NOutDisWindYZ"] = 0
+                                        fst_vt["FASTFarm"]["OutDisWindX"] = [1544]
+                                        fst_vt["FASTFarm"]["NOutDisWindXZ"] = 0  
+                                        fst_vt["FASTFarm"]["OutDisWindY"] = [0.0, 108.0, 217.0]
+
 
                                         
                                         os.makedirs(os.path.join(case_dir, "fastfarm"), exist_ok=True)

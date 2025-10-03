@@ -21,10 +21,10 @@ properties:
                 type: number
                 default: 900
                 description: Total run time (s) [>=0.0]
-            UseSC:
-                type: boolean
-                default: false
-                description: Use a super controller? (flag)
+            # UseSC:
+            #     type: boolean
+            #     default: false
+            #     description: Use a super controller? (flag)
             Mod_AmbWind:
                 type: integer
                 default: 3
@@ -37,10 +37,10 @@ properties:
                 type: integer
                 default: 0
                 description: Shared mooring system model (switch) 0) None, 3=MoorDyn
-            SC_FileName:
-                type: string
-                default: "unused.dll"
-                description: Name/location of the dynamic library .dll [Windows] or .so [Linux] containing the Super Controller algorithms (quoted string)
+            # SC_FileName:
+            #     type: string
+            #     default: "unused.dll"
+            #     description: Name/location of the dynamic library .dll [Windows] or .so [Linux] containing the Super Controller algorithms (quoted string)
             SharedMoorFile:
                 type: string
                 default: ""
