@@ -65,13 +65,13 @@ properties:
                 type: integer
                 default: 25
                 minimum: 5
-                maximum: 100
+                maximum: 200
                 description: Vertical grid-point matrix dimension
             NumGrid_Y:
                 type: integer
                 default: 25
                 minimum: 5
-                maximum: 100
+                maximum: 200
                 description: Horizontal grid-point matrix dimension
             TimeStep:
                 type: number

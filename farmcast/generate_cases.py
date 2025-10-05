@@ -28,7 +28,7 @@ def generate_cases(n_turbines=3,
                    T1_yaw_misalignment=np.arange(-30., 30., 10.),
                    T2_yaw_misalignment=np.arange(-20., 20., 10.),
                    curtailment_T1T2=np.arange(20., 100., 5.),
-                   domain_edge_LR = [3., 3.],
+                   domain_edge_LR = [3., 10., 3., 3., 3.], # extra spacing along x (left and right) and y (top and bottom ) and z in D
                    domain_edge_HR = [0.4, 0.4], # extra spacing along x (left and right) and y (top and bottom ) in D
                    cmax = 5.,
                    Mod_Wake = 2,  # 1: Polar, 2: Curled, 3: Cartesian
@@ -178,7 +178,7 @@ def generate_cases(n_turbines=3,
                             Y0_Low = - GridWidth_LR * 0.5
                             Z0_Low = 1.
                         
-                            XMax_Low = getMultipleOf(np.max(WT_X) + domain_edge_LR[0] * rotor_diameter, multipleof=dX_Low)
+                            XMax_Low = getMultipleOf(np.max(WT_X) + domain_edge_LR[1] * rotor_diameter, multipleof=dX_Low)
                             LX_Low = XMax_Low-X0_Low
                         
                             NX_Low = int(np.ceil(LX_Low/dX_Low)+1)                
