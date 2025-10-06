@@ -8,14 +8,16 @@ base_dir = os.path.dirname(run_dir)
 
 # Set the username for Kestrel
 hpc_email = 'pbortolo@nrel.gov'
-path2turbsim = '/projects/windse/cbay/solvers/turbsim'
-path2fastfarm = '/projects/windse/cbay/solvers/FAST.Farm'
+path2turbsim = '/home/pbortolo/turbsim'
+path2fastfarm = '/home/pbortolo/openfast/openfast_v4p1p2/build/glue-codes/fast-farm/FAST.Farm'
 path2controller = '/home/pbortolo/ROSCO/ROSCO_v2p10p1/rosco/controller/build/libdiscon.so'
 
 # Set the output directory for the generated files
 set = 0 #0 debug, 1 full, 2 scan at 8m/s
-# output_dir = os.path.join(os.path.dirname(base_dir), "FarmCast_runs_torque2026_set"+str(set))
-output_dir = "/scratch/pbortolo/FarmCast_runs_torque2026_set"+str(set)
+if set == 0:
+    output_dir = os.path.join(os.path.dirname(base_dir), "FarmCast_runs_torque2026_set"+str(set))
+else:
+    output_dir = "/scratch/pbortolo/FarmCast_runs_torque2026_set"+str(set)
 
 # Turbines in the farm
 n_turbines = 3
