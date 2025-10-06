@@ -13,37 +13,87 @@ path2fastfarm = '/projects/windse/cbay/solvers/FAST.Farm'
 path2controller = '/home/pbortolo/ROSCO/ROSCO_v2p10p1/rosco/controller/build/libdiscon.so'
 
 # Set the output directory for the generated files
-output_dir = os.path.join(os.path.dirname(base_dir), "FarmCast_runs")
-# output_dir = "/scratch/pbortolo/FarmCast_runs"
+set = 0 #0 debug, 1 full, 2 scan at 8m/s
+# output_dir = os.path.join(os.path.dirname(base_dir), "FarmCast_runs_torque2026_set"+str(set))
+output_dir = "/scratch/pbortolo/FarmCast_runs_torque2026_set"+str(set)
 
 # Turbines in the farm
 n_turbines = 3
 model = "IEA-3.4-130-RWT"
 rotor_diameter = 130.0
 hub_height = 110.0
+
+
 # Array of wind speeds in m/s
-ws = [10.]
+if set == 0:
+    ws = [14.]
+elif set == 1:
+    ws = [6., 10., 14.]
+elif set == 2:
+    ws = [8.]
 # Number of seeds
-n_seeds = 1
+if set == 0:
+    n_seeds = 1
+else:
+    n_seeds = 12
  # Array of turbulence intensities
-TI = [0.1]
+if set == 0 or set == 2:
+    TI = [0.1]
+else:
+    TI = [0.1, 0.2]
 # Array of shear coefficients
-shear = [0.1]
+if set == 0 or set == 2:
+    shear = [0.1]
+else:
+    shear = [0.1, 0.2]
 # Array of turbine spacing in rotor diameters
-spacing = [4.]
+if set == 0 or set == 2:
+    spacing = [6.]
+else:
+    spacing = [4., 6., 8.]
 # Array of wind directions in degrees
-wind_direction = np.arange(-8., 16., 8.)
+if set == 0:
+    wind_direction = [8.]
+elif set == 1:
+    wind_direction = [-8., 0., 8.]
+elif set == 2:
+    wind_direction = [-8., -4., 0., 4., 8.]
 # Array of yaw misalignments for the upstream turbine (T1) in degrees
-T1_yaw_misalignment = np.arange(-30., 60., 30.)
+if set == 0:
+    T1_yaw_misalignment = [30.]
+elif set == 1:
+    T1_yaw_misalignment = [-30., 0., 30.]
+elif set == 2:
+    T1_yaw_misalignment = [-30., -20., -10., 0., 10., 20., 30.]
 # Array of yaw misalignments for the middle turbine (T2) in degrees
-T2_yaw_misalignment = np.arange(-20., 40., 20.)
+if set == 0:
+    T2_yaw_misalignment = [-20.]
+elif set == 1:
+    T2_yaw_misalignment = [-20., 0., 20.]
+elif set == 2:
+    T2_yaw_misalignment = [-20., -10., 0., 10., 20.]
 # Array of curtailment values for T1 and T2 in percentage
-curtailment_T1T2 = np.arange(60., 140., 40.)
+if set == 0:
+    curtailment_T1T2 = [60.]
+elif set == 1:
+    curtailment_T1T2 = [60., 100.]
+elif set == 2:
+    curtailment_T1T2 = [60., 70., 80., 90., 100.]
 # Wake model
 Mod_Wake = 2 # Curled, 1 Polar, 3 Cartesian
 
 # Estimate the total number of cases
-n_cases = len(ws) * n_seeds * len(TI) * len(shear) * len(spacing) * len(wind_direction) * len(T1_yaw_misalignment) * len(T2_yaw_misalignment) * len(curtailment_T1T2)
+n_cases = (
+    len(ws)
+    * n_seeds
+    * len(TI)
+    * len(shear)
+    * len(spacing)
+    * len(wind_direction)
+    * len(T1_yaw_misalignment)
+    * len(T2_yaw_misalignment)
+    * len(curtailment_T1T2)
+)
 print(f"Total number of cases: {n_cases}")
 
 # Generate the cases
@@ -61,6 +111,7 @@ turbsim_lr, turbsim_hr = generate_cases(
     T1_yaw_misalignment=T1_yaw_misalignment,
     T2_yaw_misalignment=T2_yaw_misalignment,
     curtailment_T1T2=curtailment_T1T2,
+    domain_edge_LR=[2., 20., 3., 3., 3.],
     output_dir=output_dir,
     Mod_Wake = Mod_Wake,
     path2controller=path2controller,
