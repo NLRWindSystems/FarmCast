@@ -15,4 +15,4 @@ module load tmux intel-oneapi-mkl/2023.2.0-intel mamba
 
 conda activate farmcast-env
 
-python create_surrogate_torque2024.py
+python create_surrogate_torque2026.py
