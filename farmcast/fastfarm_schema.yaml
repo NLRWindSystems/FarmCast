@@ -327,7 +327,7 @@ properties:
                 description: Distance (in meters) between points in the x, y, and z directions of the WAT_BoxFile [used only if WAT=2, derived value if WAT=1] (m)
             WAT_ScaleBox:
                 type: boolean
-                default: false
+                default: True
                 description: Flag to scale the input turbulence box to zero mean and unit standard deviation at every node [DEFAULT=False] (flag)
             WAT_k_Def:
                 type: array
