@@ -59,7 +59,7 @@ properties:
             ScaleIEC:
                 type: integer
                 enum: [0, 1, 2]
-                default: 0
+                default: 1
                 description: Scale IEC turbulence models to exact target standard deviation? [0=no additional scaling; 1=use hub scale uniformly; 2=use individual scales]
             NumGrid_Z:
                 type: integer

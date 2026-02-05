@@ -2,6 +2,7 @@ from farmcast.generate_cases import generate_cases
 from farmcast.generate_slurm_files import create_slurm_ff_files, create_slurm_ts_files
 import os
 import numpy as np
+import sys
 
 run_dir = os.path.dirname(os.path.realpath(__file__))
 base_dir = os.path.dirname(run_dir)
@@ -9,15 +10,15 @@ base_dir = os.path.dirname(run_dir)
 # Set the username for Kestrel
 hpc_email = 'pbortolo@nrel.gov'
 path2turbsim = '/home/pbortolo/turbsim'
-path2fastfarm = '/home/pbortolo/openfast/openfast_v4p1p2/build/glue-codes/fast-farm/FAST.Farm'
+path2fastfarm = '/home/pbortolo/openfast/openfast_v4p2p0/build/glue-codes/fast-farm/FAST.Farm'
 path2controller = '/home/pbortolo/ROSCO/ROSCO_v2p10p1/rosco/controller/build/libdiscon.so'
 
 # Set the output directory for the generated files
-set = 0 #0 debug, 1 full, 2 scan at 8m/s
+set = int(sys.argv[1]) if len(sys.argv) > 1 else 0  # 0 debug, 1 full, 2 scan at 8m/s
 if set == 0:
     output_dir = os.path.join(os.path.dirname(base_dir), "FarmCast_runs_torque2026_set"+str(set))
 else:
-    output_dir = "/scratch/pbortolo/FarmCast_runs_torque2026_set"+str(set)
+    output_dir = "/scratch/pbortolo/IEC1/FarmCast_runs_torque2026_set"+str(set)
 
 # Turbines in the farm
 n_turbines = 3
